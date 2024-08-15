@@ -29,19 +29,19 @@ export class UsersService {
                 id: 4,
                 name: "Peter Jones",
                 email: "peter.jones@example.com",
-                role: "DIRECTOR"
+                role: "ADMIN"
             },
             {
                 id: 5,
                 name: "Peter Jones",
                 email: "peter.jones@example.com",
-                role: "MODERATOR"
+                role: "INTERN"
             }
           
           
     ]
 
-    findAll(role?: 'INTERN' | 'ENGENEER' | 'ADMIN' |'MODERATOR' |'DIRECTOR') {
+    findAll(role?: 'INTERN' | 'ENGENEER' | 'ADMIN') {
         if (role) {
             return this.users.filter(user => user.role === role)
         }
@@ -52,5 +52,32 @@ export class UsersService {
         const user = this.users.find(user => user.id === id)
 
         return user
+    }
+
+    create(user: { name : string, email: string, role : 'INTERN' | 'ENGENEER' | 'ADMIN' }) {
+        const usersByHighestId = [...this.users].sort((a,b) => b.id -a.id)
+        const newUser = {
+            id : usersByHighestId[0].id + 1,
+            ...user
+        }
+        this.users.push(newUser)
+        return newUser
+    }
+
+    update(id: number, updatedUser: { name? : string, email?: string, role? : 'INTERN' | 'ENGENEER' | 'ADMIN' }) {
+        this.users = this.users.map(user => {
+            if (user.id === id) {
+                return {...user, ...updatedUser}
+            }
+            return user
+        })
+        return this.findOne(id)
+    }
+
+    delete(id: number) {
+        const removedUser = this.findOne(id)
+        this.users = this.users.filter(user => user.id !==id)
+
+        return removedUser
     }
 }
