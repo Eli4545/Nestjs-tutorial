@@ -5,7 +5,7 @@ export class UsersController {
      
 
     @Get() // GET /users
-    findAll(@Query('role') role?: 'INTERN' | 'MANAGER' |'ADMIN') {
+    findAll(@Query('role') role?: 'INTERN' | 'ENGENEER' |'ADMIN' | 'MODERATOR' | 'DIRECTOR') {
         return []
     }
 
